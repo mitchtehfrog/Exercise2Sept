@@ -31,14 +31,13 @@ public class CurrentConditionsDisplay extends JFrame implements Observer {
   private JTextField temperatureTextField;
   private WeatherData weatherData;
 
-  public CurrentConditionsDisplay(Subject weatherData, int x, int y) {
+  public CurrentConditionsDisplay(WeatherData weatherData, int x, int y) {
 
 	    this.setTitle("Current Conditions");
 	    this.weatherData = (WeatherData) weatherData;
 
 	    // Key to register his observer with Observable.
 
-	    this.weatherData.registerObserver((headfirst.seniorstudent2.Observer)this);
 	    createGui();
 	    this.setLocation(x, y);
 	    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -118,7 +117,7 @@ public class CurrentConditionsDisplay extends JFrame implements Observer {
 
   private void removeTheObserver() {
 	Observer o = this;
-    weatherData.removeObserver((headfirst.seniorstudent2.Observer) o);
+    observable.deleteObserver(o);
   }
 
 

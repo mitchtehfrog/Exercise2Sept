@@ -7,6 +7,7 @@ package headfirst.seniorstudent2;
 
 import java.io.Serializable;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.ArrayList;
 
 /**
@@ -16,8 +17,9 @@ import java.util.ArrayList;
  * @version 1.0
  * 
  */
-public class WeatherData extends Observable implements Subject, Serializable {
+public class WeatherData extends Observable {
 
+  Observable observable;
   private float humidity;
   private transient ArrayList<Observer> observers;
   private float pressure;
@@ -27,7 +29,6 @@ public class WeatherData extends Observable implements Subject, Serializable {
    * Initializes empty list of Observers
    */
   public WeatherData() {
-	  
   }
   
   public void measurementsChanged(){
@@ -35,10 +36,6 @@ public class WeatherData extends Observable implements Subject, Serializable {
 	  notifyObservers();
   }
   
-  public ArrayList<Observer> getObservers(){
-	  return observers;
-  }
-
   public float getHumidity() {
     return humidity;
   }
@@ -52,28 +49,7 @@ public class WeatherData extends Observable implements Subject, Serializable {
   }
 
 
-
-  /**
-   * Notifies all observers that data has changed. Precondition assumed that any observer that has
-   * registered will all remove itself when it no longer desires service
-   */
-  @Override
-  public void notifyObservers() {
-    for (Observer observer : observers) {
-      observer.updateData(temperature, humidity, pressure);
-    }
-  }
-
-  @Override
-  public void registerObserver(Observer o) {
-    observers.add(o);
-  }
-
-  @Override
-  public void removeObserver(Observer o) {
-    boolean result = observers.remove(o);
-    System.out.println("Observer removed success is " + result);
-  }
+ 
 
   public void setMeasurements(float temperature, float humidity, float pressure) {
     this.temperature = temperature;
@@ -89,4 +65,13 @@ public class WeatherData extends Observable implements Subject, Serializable {
     s = s + "\n" + "pressure: " + pressure;
     return s;
   }
+
+
 }
+
+
+
+
+
+
+
