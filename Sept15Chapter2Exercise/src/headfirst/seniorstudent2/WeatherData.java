@@ -21,13 +21,10 @@ public class WeatherData extends Observable {
 
   Observable observable;
   private float humidity;
-  private transient ArrayList<Observer> observers;
   private float pressure;
   private float temperature;
 
-  /**
-   * Initializes empty list of Observers
-   */
+ 
   public WeatherData() {
   }
   

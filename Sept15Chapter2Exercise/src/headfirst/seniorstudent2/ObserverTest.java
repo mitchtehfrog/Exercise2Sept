@@ -15,7 +15,6 @@ public class ObserverTest {
 	private WeatherData data;
 	private Observer ob;
 	
-	
 	@Before
 	public void setUp() throws Exception {
 		data = new WeatherData();
@@ -40,10 +39,13 @@ public class ObserverTest {
 		float temperature = 25;
 		float humidity = 45;
 		float pressure = 1;
+		data.addObserver(ob);
 		data.setMeasurements(temperature, humidity, pressure);
+		
 		assertEquals(data.getTemperature(), 25, 0);
 		assertEquals(data.getHumidity(), 45, 0);
 		assertEquals(data.getPressure(), 1, 0);
+		assertEquals(((CurrentConditionsDisplay) ob).getWeatherData().getTemperature(), 25, 0);
 	}
 	
 	@Test

@@ -81,11 +81,16 @@ public class CurrentConditionsDisplay extends JFrame implements Observer {
   @Override
   public void update(Observable obs, Object arg){
 	  if (obs instanceof WeatherData) {
+		  observable = obs;
 		  WeatherData data = (WeatherData)obs;
 		  this.temperature = data.getTemperature();
 		  this.humidity = data.getHumidity();
 		  display();
 	  }
+  }
+  
+  public WeatherData getWeatherData(){
+	  return (WeatherData)observable;
   }
   
   public void display(){
