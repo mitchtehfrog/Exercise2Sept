@@ -6,6 +6,7 @@
 package headfirst.seniorstudent2;
 
 import java.awt.BorderLayout;
+
 import java.awt.Container;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -16,35 +17,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import java.util.Observable;
+import java.util.Observer;
 
 public class CurrentConditionsDisplay extends JFrame implements Observer {
 
+  Observable observable;
+  private float humidity;
+  private float pressure;
+  private float temperature;
   private JTextField humidityTextField;
   private JTextField pressureTextField;
   private JTextField temperatureTextField;
   private WeatherData weatherData;
 
-  public CurrentConditionsDisplay(Subject weatherData, int x, int y) {
-    this.setTitle("Current Conditions");
-    this.weatherData = (WeatherData) weatherData;
-    // Key to register his observer with Observable.
-    this.weatherData.registerObserver(this);
-    createGui();
-    this.setLocation(x, y);
-    this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    this.addWindowListener(new WindowAdapter() {
-      /**
-       * Remove the observer from the Subject so no attempt is made by Subject to nofify a non
-       * existing instance that is closed
-       */
-      @Override
-      public void windowClosing(WindowEvent e) {
-        System.out.println("Removed observer");
-        removeTheObserver();
-      }
-    });
-    this.pack();
-    this.setVisible(true);
+  public CurrentConditionsDisplay(Observable observable){
+	  this.observable = observable;
+	  observable.addObserver(this);
   }
 
   /**
@@ -57,10 +46,18 @@ public class CurrentConditionsDisplay extends JFrame implements Observer {
    * @see headfirst.seniorstudent1.Observer#updateData(float, float, float)
    */
   @Override
-  public void updateData(float temperature, float humidity, float pressure) {
-    temperatureTextField.setText("" + temperature);
-    humidityTextField.setText("" + humidity);
-    pressureTextField.setText("" + pressure);
+  public void update(Observable obs, Object arg){
+	  if (obs instanceof WeatherData) {
+		  WeatherData data = (WeatherData)obs;
+		  this.temperature = data.getTemperature();
+		  this.humidity = data.getHumidity();
+		  display();
+	  }
+  }
+  
+  public void display(){
+	  System.out.println("Current conditions: " + temperature + "F degrees and " + humidity + "% humidity");
+	  
   }
 
   private void createGui() {
@@ -86,7 +83,9 @@ public class CurrentConditionsDisplay extends JFrame implements Observer {
   }
 
   private void removeTheObserver() {
-    weatherData.removeObserver(this);
+	Observer o = this;
+    weatherData.removeObserver((headfirst.seniorstudent2.Observer) o);
   }
+
 
 }

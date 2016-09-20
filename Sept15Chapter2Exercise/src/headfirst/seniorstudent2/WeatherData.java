@@ -6,6 +6,7 @@
 package headfirst.seniorstudent2;
 
 import java.io.Serializable;
+import java.util.Observable;
 import java.util.ArrayList;
 
 /**
@@ -15,7 +16,7 @@ import java.util.ArrayList;
  * @version 1.0
  * 
  */
-public class WeatherData implements Subject, Serializable {
+public class WeatherData extends Observable implements Subject, Serializable {
 
   private float humidity;
   private transient ArrayList<Observer> observers;
@@ -26,7 +27,12 @@ public class WeatherData implements Subject, Serializable {
    * Initializes empty list of Observers
    */
   public WeatherData() {
-    observers = new ArrayList<Observer>();
+	  
+  }
+  
+  public void measurementsChanged(){
+	  setChanged();
+	  notifyObservers();
   }
   
   public ArrayList<Observer> getObservers(){
@@ -45,10 +51,7 @@ public class WeatherData implements Subject, Serializable {
     return temperature;
   }
 
-  public void measurementsChanged() {
-    System.out.println(this.toString());
-    notifyObservers();
-  }
+
 
   /**
    * Notifies all observers that data has changed. Precondition assumed that any observer that has
